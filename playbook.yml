@@ -1,0 +1,17 @@
+---
+- hosts: default
+  tasks:
+    - name: apt update
+      become: true
+      apt:
+        update_cache: yes
+    - name: apt install debconf-utils
+      become: true
+      apt:
+        name: debconf-utils
+        state: latest
+    - name: locale_gen ru_RU.UTF-8
+      become: true
+      locale_gen:
+        name: ru_RU.UTF-8
+        state: present
