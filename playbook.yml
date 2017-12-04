@@ -17,7 +17,7 @@
     - locale_gen:
         name: "{{ locale }}"
         state: present
-    - command: /usr/sbin/update-locale LANG={{ locale }} LC_ALL=$locale
+    - command: /usr/sbin/update-locale LANG={{ locale }} LC_ALL={{ locale }}
     - file: src=/usr/share/zoneinfo/{{ timezone }} dest=/etc/localtime state=link
     - lineinfile: dest=/etc/timezone state=present line={{ timezone }} regexp='.*' create=yes
       notify: dpkg-reconfigure tzdata
@@ -28,7 +28,7 @@
         line: '%wheel ALL=(ALL) NOPASSWD: ALL'
         regexp: '^%wheel'
         validate: 'visudo -cf %s'
-    - user: name={{ user_name }} password={{ password }} state=present groups=wheel append=yes createhome=yes
+    - user: name={{ user_name }} password={{ password }} state=present shell=/bin/bash groups=wheel append=yes createhome=yes
 
   handlers:
     - name: dpkg-reconfigure tzdata
