@@ -4,19 +4,18 @@
   vars:
     locale: ru_RU.UTF-8
     timezone: Europe/Moscow
-    user_name: andreysaksonov
+    username: andreysaksonov
     password: '$6$y/bx7107DTTuuAcK$DX4Y7X58HC6OPcO8w8e3J.IDUuS2G/atrW/jZerienH1zn5faHH87UyaWoHD7fAPef.oyXu83LNlKpVV.GVVT1' # password
   tasks:
     - name: apt update
       apt:
         update_cache: yes
-    - name: apt install debconf-utils
+    - name: apt upgrade
       apt:
-        name: debconf-utils
-        state: latest
-    - locale_gen:
-        name: "{{ locale }}"
-        state: present
+        upgrade: dist
+    - name: apt install debconf-utils
+      apt: name=debconf-utils state=latest
+    - locale_gen: name={{ locale }} state=present
     - command: /usr/sbin/update-locale LANG={{ locale }} LC_ALL={{ locale }}
     - file: src=/usr/share/zoneinfo/{{ timezone }} dest=/etc/localtime state=link
     - lineinfile: dest=/etc/timezone state=present line={{ timezone }} regexp='.*' create=yes
@@ -28,8 +27,15 @@
         line: '%wheel ALL=(ALL) NOPASSWD: ALL'
         regexp: '^%wheel'
         validate: 'visudo -cf %s'
-    - user: name={{ user_name }} password={{ password }} state=present shell=/bin/bash groups=wheel append=yes createhome=yes
-
+    - user: name={{ username }} password={{ password }} state=present shell=/bin/bash groups=wheel append=yes createhome=yes
+    - name: apt install task-gnome-desktop
+      apt: name=task-gnome-desktop state=latest
+    - name: apt install default-jdk
+      apt: name=default-jdk state=latest
+    - name: apt install snapd
+      apt: name=snapd state=latest
+    - command: snap install intellij-idea-community --classic
+    
   handlers:
     - name: dpkg-reconfigure tzdata
       command: /usr/sbin/dpkg-reconfigure --frontend noninteractive tzdata
