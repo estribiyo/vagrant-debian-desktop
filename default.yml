@@ -1,0 +1,53 @@
+---
+- hosts: default
+  vars:
+    locale: ru_RU.UTF-8
+    timezone: Europe/Moscow
+    codeset: CyrSlav
+    fontface: Terminus
+    username: andreysaksonov
+    # http://docs.ansible.com/ansible/latest/faq.html#how-do-i-generate-crypted-passwords-for-the-user-module
+    password: '$6$y/bx7107DTTuuAcK$DX4Y7X58HC6OPcO8w8e3J.IDUuS2G/atrW/jZerienH1zn5faHH87UyaWoHD7fAPef.oyXu83LNlKpVV.GVVT1'
+  tasks:
+    - name: apt update
+      apt: update_cache=yes
+    - name: apt upgrade
+      apt: upgrade=dist
+    - apt: name=debconf-utils state=latest
+    - apt: name=vim state=latest
+    - apt: name=mc state=latest
+    - apt: name=git state=latest
+    - apt: name=console-cyrillic state=latest
+    - apt: name=task-gnome-desktop state=latest
+    - apt: name=default-jdk state=latest
+    - apt: name=snapd state=latest
+    - command: snap install intellij-idea-community --classic
+    - locale_gen: name={{ locale }} state=present
+    - command: /usr/sbin/update-locale LANG={{ locale }} LC_ALL={{ locale }}
+    - lineinfile:
+        dest: /etc/default/console-setup
+        state: present
+        regexp: "{{ item.regexp}}"
+        line: "{{ item.line }}"
+      with_items:
+        - { regexp: '^CODESET=', line: 'CODESET="{{ codeset }}"'}
+        - { regexp: '^FONTFACE=', line: 'FONTFACE="{{ fontface }}"'}
+      notify: dpkg-reconfigure console-setup
+    - file: src=/usr/share/zoneinfo/{{ timezone }} dest=/etc/localtime state=link
+    - lineinfile: dest=/etc/timezone state=present line={{ timezone }} regexp='.*' create=yes
+      notify: dpkg-reconfigure tzdata
+    - group: name=wheel state=present
+    - lineinfile:
+        dest: /etc/sudoers
+        state: present
+        line: '%wheel ALL=(ALL) NOPASSWD: ALL'
+        regexp: '^%wheel'
+        validate: 'visudo -cf %s'
+    - user: name={{ username }} password={{ password }} state=present shell=/bin/bash groups=wheel append=yes createhome=yes
+    - shell: shutdown -r now
+    
+  handlers:
+    - name: dpkg-reconfigure tzdata
+      command: /usr/sbin/dpkg-reconfigure --frontend noninteractive tzdata
+    - name: dpkg-reconfigure console-setup
+      command: /usr/sbin/dpkg-reconfigure --frontend noninteractive console-setup
