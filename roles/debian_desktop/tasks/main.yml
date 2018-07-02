@@ -41,5 +41,14 @@
     line: '%wheel ALL=(ALL) NOPASSWD: ALL'
     regexp: '^%wheel'
     validate: 'visudo -cf %s'
-- user: name={{ username }} password={{ password }} state=present shell=/bin/bash groups=wheel append=yes createhome=yes
+- user:
+    name: '{{ login }}'
+    password: '{{ password }}'
+    comment: '{{ gecos }}'
+    state: present
+    shell: '/bin/bash'
+    groups:
+      - wheel
+    append: yes
+    createhome: yes
 - shell: shutdown -r now

@@ -5,7 +5,7 @@
 2. `vagrant plugin install vagrant-vbguest`
 3. `vagrant up`
 
-* User: `andreysaksonov`
+* User: `debian`
 * Password: `debian`
 
 #### Authors
