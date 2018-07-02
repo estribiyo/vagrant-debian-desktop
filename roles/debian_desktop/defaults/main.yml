@@ -1,0 +1,9 @@
+username: andreysaksonov
+# http://docs.ansible.com/ansible/latest/faq.html#how-do-i-generate-crypted-passwords-for-the-user-module
+password: '$6$rfigk2hLXyrUiMfB$y.nWL3yiNhoqBmJKdnbFGbGENIpDu71DAy9orFOFXwnm.hAFr7KCXkj3VreUZ2E54J9.MW6nmb9YP2GwOT1ht/'
+
+locale: ru_RU.UTF-8
+timezone: Europe/Moscow
+
+codeset: CyrSlav
+fontface: Terminus

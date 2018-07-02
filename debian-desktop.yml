@@ -1,0 +1,8 @@
+---
+- name: Debian Desktop 
+  hosts: debian-desktop
+  tags: [debian-desktop_install]
+  roles:
+    - debian_desktop
+
+...
