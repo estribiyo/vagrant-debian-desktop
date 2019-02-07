@@ -1,5 +1,5 @@
 # vagrant_debian-desktop
-[Vagrant] Debian Linux (GNOME Desktop & IntelliJ IDEA CE)
+[Vagrant] Debian Linux (Xfce Desktop Environment & IntelliJ IDEA CE)
 
 1. [Download & Install Vagrant](https://www.vagrantup.com)
 2. `vagrant plugin install vagrant-vbguest`

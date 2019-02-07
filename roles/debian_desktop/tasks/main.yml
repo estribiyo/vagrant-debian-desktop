@@ -12,8 +12,8 @@
   apt: name=git state=latest
 - name: apt install console-cyrillic
   apt: name=console-cyrillic state=latest
-- name: Install GNOME Desktop
-  apt: name=task-gnome-desktop state=latest
+- name: Install Xfce Desktop Environment
+  apt: name=task-xfce-desktop state=latest
 - name: Install Java Development Kit
   apt: name=default-jdk state=latest
 - name: "https://snapcraft.io/"
