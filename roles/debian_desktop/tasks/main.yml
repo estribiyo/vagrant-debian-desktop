@@ -1,25 +1,17 @@
+- name: Hold grub (workaround)
+  dpkg_selections: 
+    name: "{{ item }}"
+    selection: hold
+  with_items: "{{ grub_packages }}"
 - name: apt update
   apt: update_cache=yes
 - name: apt upgrade
   apt: upgrade=dist
-- name: apt install debconf-utils
-  apt: name=debconf-utils state=latest
-- name: apt install vim
-  apt: name=vim state=latest
-- name: apt install mc
-  apt: name=mc state=latest
-- name: apt install git
-  apt: name=git state=latest
-- name: apt install console-cyrillic
-  apt: name=console-cyrillic state=latest
-- name: Install Xfce Desktop Environment
-  apt: name=task-xfce-desktop state=latest
-- name: Install Java Development Kit
-  apt: name=default-jdk state=latest
-- name: "https://snapcraft.io/"
-  apt: name=snapd state=latest
-- name: Install IntelliJ IDEA
-  command: snap install intellij-idea-community --classic
+# Install pre-reqs for Ansible install
+- name: Installing packages
+  apt:
+    name: "{{ debian_packages }}"
+    state: present  
 - locale_gen: name={{ locale }} state=present
 - command: /usr/sbin/update-locale LANG={{ locale }} LC_ALL={{ locale }}
 - lineinfile:
@@ -28,7 +20,6 @@
     regexp: "{{ item.regexp}}"
     line: "{{ item.line }}"
   with_items:
-    - { regexp: '^CODESET=', line: 'CODESET="{{ codeset }}"'}
     - { regexp: '^FONTFACE=', line: 'FONTFACE="{{ fontface }}"'}
   notify: dpkg-reconfigure console-setup
 - file: src=/usr/share/zoneinfo/{{ timezone }} dest=/etc/localtime state=link

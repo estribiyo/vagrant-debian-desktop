@@ -3,8 +3,22 @@ login: debian
 password: '$6$rfigk2hLXyrUiMfB$y.nWL3yiNhoqBmJKdnbFGbGENIpDu71DAy9orFOFXwnm.hAFr7KCXkj3VreUZ2E54J9.MW6nmb9YP2GwOT1ht/'
 gecos: 'Debian User'
 
-locale: ru_RU.UTF-8
-timezone: Europe/Moscow
+locale: es_ES.UTF-8
+timezone: Europe/Madrid
 
-codeset: CyrSlav
 fontface: Terminus
+
+debian_packages:
+  - vim
+  - mc
+  - htop
+  - git
+  - debconf-utils
+  - task-xfce-desktop
+  - task-spanish
+
+grub_packages:
+  - grub-common
+  - grub-pc
+  - grub-pc-bin
+  - grub2-common
