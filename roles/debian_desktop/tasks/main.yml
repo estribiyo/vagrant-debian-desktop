@@ -3,17 +3,81 @@
     name: "{{ item }}"
     selection: hold
   with_items: "{{ grub_packages }}"
-- name: apt update
+- name: Adding new group 'wheel'
+  group: name=wheel state=present
+- name: Add new user '{{ gecos }}'' {{ login }})
+  user:
+    name: '{{ login }}'
+    password: '{{ password }}'
+    comment: '{{ gecos }}'
+    state: present
+    shell: '/bin/bash'
+    groups:
+      - wheel
+    append: yes
+    createhome: yes
+- name: Updating Repositories
   apt: update_cache=yes
-- name: apt upgrade
+- name: Upgrading Packages
   apt: upgrade=dist
 # Install pre-reqs for Ansible install
-- name: Installing packages
+- name: Installing Debian Packages
   apt:
-    name: "{{ debian_packages }}"
+    name: "{{ packages }}"
     state: present  
+  vars:
+    packages:
+      - vim
+      - mc
+      - htop
+      - git
+      - debconf-utils
+      - task-xfce-desktop
+      - task-spanish
+      - terminator    
+      - screen
+      - pipenv
+- name: Installing Python Packages
+  pip: 
+    name: 
+      - python-language-server
+      - flake8
+      - autopep8
+- name: Installing Atom
+  apt:
+    deb: https://atom.io/download/deb
+- name: Installing Atom Plugins
+  command: apm install "{{ item }}"
+  become: yes
+  become_user: "{{ login }}"
+  with_items:
+    - linter
+    - linter-ui-default
+    - intentions
+    - busy-signal
+    - linter-flake8
+    - autocomplete-python
+    - python-autopep8
+    - script 
+    - atom-file-icons
+    - atom-material-syntax
+    - minimap
+    - minimap-git-diff 
+    - minimap-highlight-selected
+    - git-control
+    - git-time-machine
+    - atom-ide-base
+    - ide-python
+    - atom-ide-debugger
+    - atom-ide-console
+    - atom-python-run
+    - python-black
+    - python-debugger
+    - python-docstring
+    - python-requirements
 - locale_gen: name={{ locale }} state=present
-- command: /usr/sbin/update-locale LANG={{ locale }} LC_ALL={{ locale }}
+- name: Setting locales "{{ locale }}"
+  command: /usr/sbin/update-locale LANG={{ locale }} LC_ALL={{ locale }}
 - lineinfile:
     dest: /etc/default/console-setup
     state: present
@@ -25,21 +89,12 @@
 - file: src=/usr/share/zoneinfo/{{ timezone }} dest=/etc/localtime state=link
 - lineinfile: dest=/etc/timezone state=present line={{ timezone }} regexp='.*' create=yes
   notify: dpkg-reconfigure tzdata
-- group: name=wheel state=present
 - lineinfile:
     dest: /etc/sudoers
     state: present
     line: '%wheel ALL=(ALL) NOPASSWD: ALL'
     regexp: '^%wheel'
     validate: 'visudo -cf %s'
-- user:
-    name: '{{ login }}'
-    password: '{{ password }}'
-    comment: '{{ gecos }}'
-    state: present
-    shell: '/bin/bash'
-    groups:
-      - wheel
-    append: yes
-    createhome: yes
+- name: Configuring keyboard "{{ keymap }}"
+  command: localectl set-keymap "{{ keymap }}"
 - shell: shutdown -r now

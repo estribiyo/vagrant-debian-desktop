@@ -1,4 +1,4 @@
-# Debian Desktop XFCE (Vagrant)
+# Debian Desktop XFCE with Atom as IDE for Python (Vagrant)
 
 ## Installation
 
@@ -9,6 +9,7 @@
 * User: `debian`
 * Password: `debian`
 
-## Authors
+## Credits
 
-* [Andrey Saksonov](https://saksonov.me)
+* [Andrey Saksonov](https://saksonov.me) - Original GitHub repo
+* @DavidDataScience - [Setting up Atom as a Python IDE [A How To Guide]](https://hackernoon.com/setting-up-atom-as-a-python-ide-a-how-to-guide-o6dd37ff)

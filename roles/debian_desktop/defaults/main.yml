@@ -5,17 +5,9 @@ gecos: 'Debian User'
 
 locale: es_ES.UTF-8
 timezone: Europe/Madrid
+keymap: es
 
 fontface: Terminus
-
-debian_packages:
-  - vim
-  - mc
-  - htop
-  - git
-  - debconf-utils
-  - task-xfce-desktop
-  - task-spanish
 
 grub_packages:
   - grub-common
