@@ -1,0 +1,36 @@
+- name: Creating new group 'wheel'
+  group: name=wheel state=present
+- name: Adding group 'wheel' to /etc/sudoers
+  lineinfile:
+    dest: /etc/sudoers
+    state: present
+    line: '%wheel ALL=(ALL) NOPASSWD: ALL'
+    regexp: '^%wheel'
+    validate: 'visudo -cf %s'
+- name: Add new user '{{ gecos }}' ({{ login }})
+  user:
+    name: '{{ login }}'
+    password: '{{ password }}'
+    comment: '{{ gecos }}'
+    state: present
+    shell: '/bin/bash'
+    groups:
+      - wheel
+    append: yes
+    createhome: yes
+- name: Creates directory
+  file:
+    path: /home/{{ login }}/.ssh
+    state: directory
+- name: Generate RSA key
+  command : ssh-keygen -q -t rsa -f /home/{{ login }}/.ssh/id_rsa -C "" -N ""
+  args:
+    creates: /home/{{ login }}/.ssh/id_rsa
+- name: Fix owner of the generated pub key
+  file:
+    path: /home/{{ login }}/.ssh/{{ item }}
+    owner: "{{ login }}"
+    group: "{{ login }}"
+  with_items:
+    - id_rsa
+    - id_rsa.pub

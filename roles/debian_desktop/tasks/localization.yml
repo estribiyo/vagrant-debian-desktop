@@ -1,0 +1,20 @@
+- name: Generating locales
+  locale_gen: name={{ locale }} state=present
+- name: Setting locales "{{ locale }}"
+  command: /usr/sbin/update-locale LANG={{ locale }} LC_ALL={{ locale }}
+- name: Linking timezone to /etc/localtime
+  file: src=/usr/share/zoneinfo/{{ timezone }} dest=/etc/localtime state=link
+- name: Setting timezone to {{ timezone }}
+  lineinfile: dest=/etc/timezone state=present line={{ timezone }} regexp='.*' create=yes
+  notify: dpkg-reconfigure tzdata
+- name: Changing keymap to '{{ keymap }}'
+  lineinfile: path=/etc/vconsole.conf line="KEYMAP={{ keymap }}" create=yes
+- name: Changing console font to '{{ fontface }}'
+  lineinfile:
+    dest: /etc/default/console-setup
+    state: present
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+  with_items:
+    - { regexp: '^FONTFACE=', line: 'FONTFACE="{{ fontface }}"'}
+  notify: dpkg-reconfigure console-setup

@@ -1,0 +1,25 @@
+- name: Hold grub (workaround)
+  dpkg_selections:
+    name: "{{ item }}"
+    selection: hold
+  with_items: "{{ grub_packages }}"
+- name: Updating Repositories
+  apt: update_cache=yes
+- name: Upgrading Packages
+  apt: upgrade=dist
+- name: Installing Debian Packages
+  apt:
+    name: "{{ packages }}"
+    state: present
+  vars:
+    packages:
+      - vim
+      - mc
+      - htop
+      - git
+      - debconf-utils
+      - task-xfce-desktop
+      - task-spanish
+      - terminator
+      - screen
+      - pipenv

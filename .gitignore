@@ -1,2 +1,3 @@
 .vagrant
 .venv
+roles/debian_desktop/tasks/projects.yml

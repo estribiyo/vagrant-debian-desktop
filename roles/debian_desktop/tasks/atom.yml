@@ -1,0 +1,60 @@
+- name: Installing Python Dependencies
+  pip:
+    name:
+      - python-language-server
+      - flake8
+      - autopep8
+      - pydocstyle
+      - pylint
+- name: Check if Atom executable exists
+  stat:
+    path: /usr/bin/atom
+  register: atom_executable
+- name: Installing Atom
+  apt:
+    deb: https://atom.io/download/deb
+  when: atom_executable.stat.exists == false
+- name: Installing Atom Plugins
+  shell:  |
+    if [[ ! -d /home/{{ login }}/.atom/packages/{{ item }} ]]
+    then
+      apm install {{ item }} && echo "Installed"
+    else
+      echo "Already exists!"
+    fi
+  args:
+    executable: /bin/bash
+  become: yes
+  become_user: "{{ login }}"
+  register: ret
+  failed_when: ret.rc != 0
+  changed_when: "'Installed' in ret.stdout"
+  with_items:
+    - atom-file-icons
+    - atom-ide-base
+    - atom-ide-console
+    - atom-ide-debugger
+    - atom-material-syntax
+    - atom-python-run
+    - atom-python-virtualenv
+    - autocomplete-python
+    - busy-signal
+    - git-control
+    - git-plus
+    - git-time-machine
+    - highlight-selected
+    - ide-python
+    - intentions
+    - linter
+    - linter-ui-default
+    - minimap
+    - minimap-git-diff
+    - minimap-highlight-selected
+    - python-autopep8
+    - python-black
+    - python-debugger
+    - python-docstring
+    - python-linters
+    - python-requirements
+    - script
+    - split-diff
