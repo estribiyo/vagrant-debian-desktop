@@ -1,9 +1,14 @@
 # Changelog
 
+## 21/12/2020
+
+- Mounting host home directory on guest `/mn/shared_home`.
+- Improving ansible to avoid changes that really are not changes.
+
 ## 20/12/2020
 
 - Installed some useful things: Terminator, Screen, ...
-- Installed Atom as Python IDE and some plugins
+- Installed Atom as Python IDE and some plugins.
 
 ## 19/12/2020
 
