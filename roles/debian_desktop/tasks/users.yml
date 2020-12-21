@@ -22,15 +22,19 @@
   file:
     path: /home/{{ login }}/.ssh
     state: directory
+  become: yes
+  become_user: "{{ login }}"
 - name: Generate RSA key
   command : ssh-keygen -q -t rsa -f /home/{{ login }}/.ssh/id_rsa -C "" -N ""
   args:
     creates: /home/{{ login }}/.ssh/id_rsa
-- name: Fix owner of the generated pub key
-  file:
-    path: /home/{{ login }}/.ssh/{{ item }}
-    owner: "{{ login }}"
-    group: "{{ login }}"
-  with_items:
-    - id_rsa
-    - id_rsa.pub
+  become: yes
+  become_user: "{{ login }}"
+# - name: Fix owner of the generated pub key
+#   file:
+#     path: /home/{{ login }}/.ssh/{{ item }}
+#     owner: "{{ login }}"
+#     group: "{{ login }}"
+#   with_items:
+#     - id_rsa
+#     - id_rsa.pub
