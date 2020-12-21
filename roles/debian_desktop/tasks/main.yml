@@ -1,12 +1,12 @@
+- name: Localization
+  include_tasks:
+    file: localization.yml
 - name: User
   include_tasks:
     file: users.yml
 - name: Packages
   include_tasks:
     file: packages.yml
-- name: Localization
-  include_tasks:
-    file: localization.yml
 - name: Installing Atom and Plugins
   include_tasks:
     file: atom.yml
