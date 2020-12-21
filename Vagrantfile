@@ -3,6 +3,7 @@
 
 Vagrant.configure("2") do |config|
   config.vbguest.auto_update = true
+  config.vm.synced_folder "#{Dir.home}", '/mnt/shared_home', :mount_options => ["dmode=777,fmode=777"]
   config.vm.define "debian-desktop" do |debian_desktop|
     debian_desktop.vm.hostname = "debian-desktop"
     debian_desktop.vm.box = "debian/buster64"
