@@ -2,12 +2,28 @@
 
 ## Installation
 
-1. [Download & Install Vagrant](https://www.vagrantup.com)
-2. `vagrant plugin install vagrant-vbguest`
-3. `vagrant up`
+### Intall Vagrant and VirtualBox
 
-* User: `debian`
-* Password: `debian`
+- [Download & install VirtualBox](https://www.virtualbox.org)
+- [Download & install Vagrant](https://www.vagrantup.com)
+
+#### Intall required plugins
+
+- `vagrant plugin install vagrant-vbguest`
+
+## Provision
+
+- Put your provisioning into `projects.yml`.
+- `vagrant up`
+
+## Usage
+
+When you bring up your machine, default user and password are:
+
+- User: `debian`
+- Password: `debian`
+
+Note: You can customize it on `debian_desktop/defaults/main`.
 
 ## Credits
 

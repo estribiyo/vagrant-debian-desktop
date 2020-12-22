@@ -11,7 +11,11 @@
   include_tasks:
     file: atom.yml
 - name: Preparing projects to work on...
-  include: projects.yml
-  when: "'projects.yml' is file"
-- name: Rebooting...
-  shell: shutdown -r now
+  include: "{{ item }}"
+  with_first_found:
+    - files:
+        - projects.yml
+      skip: true
+# Since reboot will cause shared folders unavailable, whe don't want it...
+# - name: Rebooting...
+#   shell: shutdown -r now
