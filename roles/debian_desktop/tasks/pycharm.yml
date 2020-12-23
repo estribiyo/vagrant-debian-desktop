@@ -5,3 +5,10 @@
 - name: Install PyCharm
   command: snap install pycharm-community --classic
   when: pycharm_executable.stat.exists == false
+  register: pychout
+  changed_when: "'is already installed' not in pychout.stderr"
+- name: Update PyCharm
+  command: snap refresh pycharm-community --classic
+  when: "'is already installed' in pychout.stderr"
+  register: pychout
+  changed_when: "'has no updates available' not in pychout.stderr"
