@@ -24,3 +24,5 @@
       - screen
       - pipenv
       - qtcreator
+      - hunspell
+      - snapd
