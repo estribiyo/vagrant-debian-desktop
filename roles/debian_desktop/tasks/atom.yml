@@ -16,7 +16,7 @@
   apt:
     deb: https://atom.io/download/deb
   when: atom_executable.stat.exists == false
-- name: Installing Atom Plugins
+- name: Checking/installing Atom plugins
   shell:  |
     if [[ ! -d /home/{{ login }}/.atom/packages/{{ item }} ]]
     then
