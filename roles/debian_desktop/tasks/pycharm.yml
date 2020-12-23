@@ -1,0 +1,7 @@
+- name: Check if PyCharm executable exists
+  stat:
+    path: /snap/bin/pychar-community
+  register: pycharm_executable
+- name: Install PyCharm
+  command: snap install pycharm-community --classic
+  when: pycharm_executable.stat.exists == false
