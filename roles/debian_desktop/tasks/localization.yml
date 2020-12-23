@@ -20,7 +20,7 @@
   changed_when: kbdlayout.stdout != keymap
 # - debug:
 #     var: kbdlayout
-- name: Changing keymap '{{ kbdlayout.stdout }}' to '{{ keymap }}'
+- name: Changing keymap {{ kbdlayout.stdout }} to "{{ keymap }}"
   command: localectl set-keymap "{{ keymap }}"
   when: kbdlayout.stdout != keymap
 - name: Changing console font to '{{ fontface }}'
@@ -32,3 +32,7 @@
   with_items:
     - { regexp: '^FONTFACE=', line: 'FONTFACE="{{ fontface }}"'}
   notify: dpkg-reconfigure console-setup
+- name: Installing {{ keymap }} language for hunspell
+  apt:
+    name: "hunspell-{{ keymap }}"
+    state: present
