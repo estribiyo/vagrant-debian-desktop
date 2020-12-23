@@ -1,11 +1,13 @@
 - name: Installing Python Dependencies
   pip:
+    executable: "/usr/bin/pip3"
     name:
-      - python-language-server
+      - python-language-server[all]
       - flake8
       - autopep8
       - pydocstyle
       - pylint
+      - mypy
 - name: Check if Atom executable exists
   stat:
     path: /usr/bin/atom
