@@ -1,4 +1,4 @@
-# Debian Desktop XFCE with Atom as IDE for Python (Vagrant)
+# Debian Desktop XFCE with PyCharm & Atom as IDE for Python (Vagrant)
 
 ## Installation
 
