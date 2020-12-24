@@ -60,3 +60,25 @@
     - python-requirements
     - script
     - split-diff
+- name: Check if Atom shortcut exists
+  stat:
+    path: "/home/{{ login }}/Escritorio/Atom.desktop"
+  register: desktop_link
+- name: Create link in desktop to Atom
+  copy:
+    dest: "/home/{{ login }}/Escritorio/Atom.desktop"
+    content: |
+      [Desktop Entry]
+      Version=1.0
+      Type=Application
+      Name=Atom
+      Comment=Editor Atom
+      Exec=/usr/bin/atom
+      Icon=atom
+      Path=/home/{{ login }}
+      Terminal=false
+      StartupNotify=true
+    mode: 0750
+  when: desktop_link.stat.exists == false
+  become: yes
+  become_user: "{{ login }}"

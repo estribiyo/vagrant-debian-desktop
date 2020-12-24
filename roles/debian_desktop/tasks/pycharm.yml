@@ -12,3 +12,25 @@
   when: "'is already installed' in pychout.stderr"
   register: pychout
   changed_when: "'has no updates available' not in pychout.stderr"
+- name: Check if PyCharm shortcut exists
+  stat:
+    path: /home/{{ login }}/Escritorio/PyCharm.desktop
+  register: dsktplnk
+- name: Create link in desktop to PyCharm
+  copy:
+    dest: /home/{{ login }}/Escritorio/PyCharm.desktop
+    content: |
+      [Desktop Entry]
+      Version=1.0
+      Type=Application
+      Name=PyCharm
+      Comment=IDE para Python
+      Exec=/snap/bin/pycharm-community
+      Icon=/snap/pycharm-community/current/bin/pycharm.svg
+      Path=/home/{{ login }}
+      Terminal=false
+      StartupNotify=true
+    mode: 0750
+  when: dsktplnk.stat.exists == false
+  become: yes
+  become_user: "{{ login }}"

@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Atom
+Comment=Atom
+Exec=/usr/bin/atom
+Icon=
+Path=/tmp
+Terminal=false
+StartupNotify=true
