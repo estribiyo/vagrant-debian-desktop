@@ -48,6 +48,7 @@
     - ide-python
     - intentions
     - linter
+    - linter-flake8
     - linter-ui-default
     - markdown-preview-enhanced
     - minimap
@@ -59,6 +60,7 @@
     - python-docstring
     - python-linters
     - python-requirements
+    - python-tools
     - script
     - split-diff
 - name: Check if Atom shortcut exists
