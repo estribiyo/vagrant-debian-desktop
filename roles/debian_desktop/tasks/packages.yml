@@ -26,3 +26,8 @@
       - qtcreator
       - hunspell
       - snapd
+      - gvfs-fuse
+      - gvfs-backends
+      - sshfs
+      - apache2
+      - libapache2-mod-php
