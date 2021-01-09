@@ -13,21 +13,22 @@
     state: present
   vars:
     packages:
-      - vim
-      - mc
-      - htop
-      - git
+      - apache2
+      - chromium
       - debconf-utils
-      - task-xfce-desktop
-      - task-spanish
-      - terminator
-      - screen
+      - git
+      - gvfs-backends
+      - gvfs-fuse
+      - htop
+      - hunspell
+      - libapache2-mod-php
+      - mc
       - pipenv
       - qtcreator
-      - hunspell
+      - screen
       - snapd
-      - gvfs-fuse
-      - gvfs-backends
       - sshfs
-      - apache2
-      - libapache2-mod-php
+      - task-spanish
+      - task-xfce-desktop
+      - terminator
+      - vim

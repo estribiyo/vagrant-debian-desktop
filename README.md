@@ -1,4 +1,4 @@
-# Debian Desktop XFCE with Atom as IDE for Python (Vagrant)
+# Debian Desktop XFCE with PyCharm & Atom as IDE for Python (Vagrant)
 
 ## Installation
 
@@ -13,7 +13,7 @@
 
 ## Provision
 
-- Put your provisioning into `projects.yml`.
+- Put your provisioning into `roles/debian_desktop/tasks/projects.yml`.
 - `vagrant up`
 
 ## Usage
@@ -23,7 +23,7 @@ When you bring up your machine, default user and password are:
 - User: `debian`
 - Password: `debian`
 
-Note: You can customize it on `debian_desktop/defaults/main`.
+Note: You can customize it on `roles/debian_desktop/defaults/main.yml`.
 
 ## Credits
 
