@@ -12,6 +12,12 @@
   when: "'is already installed' in pychout.stderr"
   register: pychout
   changed_when: "'has no updates available' not in pychout.stderr"
+- name: Creates 'Escritorio' directory
+  file:
+    path: /home/{{ login }}/Escritorio
+    state: directory
+  become: yes
+  become_user: "{{ login }}"    
 - name: Check if PyCharm shortcut exists
   stat:
     path: /home/{{ login }}/Escritorio/PyCharm.desktop

@@ -64,6 +64,12 @@
     - script
     - sort-lines
     - split-diff
+- name: Creates 'Escritorio' directory
+  file:
+    path: /home/{{ login }}/Escritorio
+    state: directory
+  become: yes
+  become_user: "{{ login }}"    
 - name: Check if Atom shortcut exists
   stat:
     path: "/home/{{ login }}/Escritorio/Atom.desktop"
