@@ -14,6 +14,7 @@
   vars:
     packages:
       - apache2
+      - build-essential
       - chromium
       - debconf-utils
       - git
@@ -22,6 +23,14 @@
       - htop
       - hunspell
       - libapache2-mod-php
+      - libbz2-dev
+      - libc6-dev
+      - libffi-dev
+      - libgdbm-dev
+      - libncursesw5-dev
+      - libreadline-gplv2-dev
+      - libsqlite3-dev
+      - libssl-dev
       - mc
       - pipenv
       - qtcreator
@@ -31,4 +40,29 @@
       - task-spanish
       - task-xfce-desktop
       - terminator
+      - tk-dev
       - vim
+      - wget
+      - zlib1g-dev
+- name: Downlad Python {{ python_version }}
+  get_url:
+    url: https://www.python.org/ftp/python/{{ python_version }}/Python-{{ python_version }}.tgz
+    dest: /usr/src
+  register: dwnpy
+- name: Extract Python {{ python_version }} archive
+  tags:
+    - wordpress
+    - wordpress:install
+  unarchive:
+    src: "/usr/src/Python-{{ python_version }}.tgz"
+    dest: "/usr/src"
+    remote_src: True
+  when: dwnpy.changed
+- name: Compiling Python {{ python_version }}
+  command: "{{ item }}"
+  args:
+    chdir: "/usr/src/Python-{{ python_version }}"
+  with_items: 
+    - "./configure --enable-optimizations"
+    - "make altinstall"
+  when: dwnpy.changed

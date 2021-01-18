@@ -9,6 +9,8 @@ keymap: es
 
 fontface: Terminus
 
+python_version: 3.9.1
+
 grub_packages:
   - grub-common
   - grub-pc
