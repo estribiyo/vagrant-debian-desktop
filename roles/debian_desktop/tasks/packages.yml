@@ -1,8 +1,8 @@
-- name: Hold grub (workaround)
-  dpkg_selections:
-    name: "{{ item }}"
-    selection: hold
-  with_items: "{{ grub_packages }}"
+# - name: Hold grub (workaround)
+#   dpkg_selections:
+#     name: "{{ item }}"
+#     selection: hold
+#   with_items: "{{ grub_packages }}"
 - name: Updating Repositories
   apt: update_cache=yes
 - name: Upgrading Packages
@@ -33,6 +33,7 @@
       - libssl-dev
       - mc
       - pipenv
+      - python3-pyside2*
       - qtcreator
       - screen
       - snapd
@@ -50,9 +51,6 @@
     dest: /usr/src
   register: dwnpy
 - name: Extract Python {{ python_version }} archive
-  tags:
-    - wordpress
-    - wordpress:install
   unarchive:
     src: "/usr/src/Python-{{ python_version }}.tgz"
     dest: "/usr/src"
@@ -62,7 +60,7 @@
   command: "{{ item }}"
   args:
     chdir: "/usr/src/Python-{{ python_version }}"
-  with_items: 
-    - "./configure --enable-optimizations"
+  with_items:
+    - "./configure --enable-optimizations --enable-shared"
     - "make altinstall"
   when: dwnpy.changed

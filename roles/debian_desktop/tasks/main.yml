@@ -10,6 +10,8 @@
 - name: Installing Atom as IDE for Python
   include_tasks:
     file: atom.yml
+# - name: Unconditionally reboot the machine with all defaults
+#   reboot:
 - name: Yet another IDE for Python
   include_tasks:
     file: pycharm.yml

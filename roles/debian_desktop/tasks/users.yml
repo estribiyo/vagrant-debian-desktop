@@ -16,6 +16,7 @@
     shell: '/bin/bash'
     groups:
       - wheel
+      - vboxsf
     append: yes
     createhome: yes
     generate_ssh_key: yes

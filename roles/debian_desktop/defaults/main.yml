@@ -7,12 +7,4 @@ locale: es_ES.UTF-8
 timezone: Europe/Madrid
 keymap: es
 
-fontface: Terminus
-
 python_version: 3.9.1
-
-grub_packages:
-  - grub-common
-  - grub-pc
-  - grub-pc-bin
-  - grub2-common

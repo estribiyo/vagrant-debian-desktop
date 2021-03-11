@@ -1,6 +1,11 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+unless Vagrant.has_plugin?("vagrant-vbguest")
+  puts 'Installing vagrant-vbguest Plugin...'
+  system('vagrant plugin install vagrant-vbguest')
+end
+
 Vagrant.configure("2") do |config|
   config.vbguest.auto_update = true
   config.vm.synced_folder ENV["HOME"], "/mnt/shared_home", id: "shared_home", automount: true
@@ -16,14 +21,18 @@ Vagrant.configure("2") do |config|
       #vb.customize ["modifyvm", :id, "--accelerate3d", "on"]
       #vb.customize ["modifyvm", :id, "--monitorcount", "2"]
       vb.customize ["modifyvm", :id, "--clipboard", "bidirectional"]
+      vb.customize ["storageattach", :id, "--storagectl", "SATA Controller", "--port", "1", "--device", "0", "--type", "dvddrive", "--medium", "emptydrive"]
     end
     debian_desktop.vm.provision "ansible_local" do |ansible|
       ansible.compatibility_mode = "2.0"
-      ansible.install_mode = "pip_args_only"
-      ansible.pip_args = "-r /vagrant/requirements.txt"
       ansible.become = true
       ansible.config_file = "ansible.cfg"
+      ansible.install_mode = "pip3"
+      ansible.version = "2.7.7"
+      ansible.extra_vars = { ansible_python_interpreter:"/usr/bin/python3" }
+      # playbook settings
       ansible.playbook = "debian-desktop.yml"
+      ansible.limit = "all"
     end
   end
 end

@@ -4,8 +4,6 @@
   shell: "locale | grep ^LANG= | cut -d= -f2"
   register: locales_out
   changed_when: locales_out.stdout != locale
-# - debug:
-#     var: locales_out
 - name: Setting locales "{{ locale }}"
   command: /usr/sbin/update-locale LANG={{ locale }} LANGUAGE={{ locale }} LC_ALL={{ locale }}
   when: locales_out.stdout != locale
@@ -15,24 +13,13 @@
   lineinfile: dest=/etc/timezone state=present line={{ timezone }} regexp='.*' create=yes
   notify: dpkg-reconfigure tzdata
 - name: Check keyboard layout
-  shell: "cat /etc/default/keyboard | grep XKBLAYOUT | cut -d'=' -f2"
+  shell: "cat /etc/default/keyboard | grep XKBLAYOUT | cut -d'\"' -f2"
   register: kbdlayout
   changed_when: kbdlayout.stdout != keymap
-# - debug:
-#     var: kbdlayout
-- name: Changing keymap {{ kbdlayout.stdout }} to "{{ keymap }}"
+- name: Change keymap "{{ kbdlayout.stdout }}" to "{{ keymap }}"
   command: localectl set-keymap "{{ keymap }}"
   when: kbdlayout.stdout != keymap
-- name: Changing console font to '{{ fontface }}'
-  lineinfile:
-    dest: /etc/default/console-setup
-    state: present
-    regexp: "{{ item.regexp }}"
-    line: "{{ item.line }}"
-  with_items:
-    - { regexp: '^FONTFACE=', line: 'FONTFACE="{{ fontface }}"'}
-  notify: dpkg-reconfigure console-setup
-- name: Installing {{ keymap }} language for hunspell
+- name: Installing "{{ keymap }}" language for hunspell
   apt:
     name: "hunspell-{{ keymap }}"
     state: present
